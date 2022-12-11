@@ -34,17 +34,17 @@ window.onload = function init() {
   // 3D gasket properties
   const gasket = {
     vertices: [
-      vec3(0.0, 0.0, -0.25),
-      vec3(0.0, 0.2357, 0.0833),
-      vec3(-0.2041, -0.1179, 0.0833),
-      vec3(0.2041, -0.1179, 0.0833),
+      vec3(  0.0000,  0.0000, -1.0000 ),
+      vec3(  0.0000,  0.9428,  0.3333 ),
+      vec3( -0.8165, -0.4714,  0.3333 ),
+      vec3(  0.8165, -0.4714,  0.3333 )
     ],
     division: 3,
     speed: 200,
     theta: [0, 0, 0],
     degree: 180,
     rotateXYZ: [false, false, true],
-    scale: 1,
+    scale: 3,
     scaleFac: 3,
     trans: [0.0, 0.0],
     transMode: 0,

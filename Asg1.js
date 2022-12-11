@@ -29,11 +29,20 @@ window.onload = function init()
     // Intial tetrahedron with equal length sides
     
     var vertices = [
-        vec3(  0.0000,  0.0000, -1.0000 ),
-        vec3(  0.0000,  0.9428,  0.3333 ),
-        vec3( -0.8165, -0.4714,  0.3333 ),
-        vec3(  0.8165, -0.4714,  0.3333 )
+        vec4(  0.0000,  0.0000, -1.0000 , 1.0),
+        vec4(  0.0000,  0.9428,  0.3333, 1.0),
+        vec4( -0.8165, -0.4714,  0.3333, 1.0 ),
+        vec4(  0.8165, -0.4714,  0.3333, 1.0 )
     ];
+     var vertexColors =[
+        vec4( 1.0, 0.0, 0.0, 0.0 ),  // black or red?
+        vec4( 1.0, 0.0, 0.0, 0.0 ),  // red or black?
+        vec4( 1.0, 0.0, 0.0, 0.0 ),  // yellow
+        vec4( 0.0, 0.0, 0.0, 0.0 ),  // green
+        vec4( 0.0, 0.0, 0.0, 0.0 ),  // blue
+        vec4( 0.0, 0.0, 0.0, 0.0 ),  // magenta
+        vec4( 0.0, 0.0, 0.0, 0.0 )   // cyan
+     ]
     
     divideTetra( vertices[0], vertices[1], vertices[2], vertices[3],
                  NumTimesToSubdivide);
@@ -56,24 +65,24 @@ window.onload = function init()
     // Create a buffer object, initialize it, and associate it with the
     //  associated attribute variable in our vertex shader
     
-    //-------load colors to gpu-----------------
-    var vBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
-
-    var vPosition = gl.getAttribLocation( program, "vPosition" );
-    gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vPosition );
-
-    var cBuffer = gl.createBuffer();
+    //-------load colors to gpu--------------------------------------
+    var cBuffer = gl.createBuffer(); // color buffer
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW );
-    
-    var vColor = gl.getAttribLocation( program, "vColor" );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(vertexColors), gl.STATIC_DRAW );
+
+    var vColor = gl.getAttribLocation( program, "vColor" ); // color
     gl.vertexAttribPointer( vColor, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vColor );
+
+    var bufferId = gl.createBuffer(); // buffer id
+    gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+
+    var vPosition = gl.getAttribLocation( program, "vPosition" ); // vertex position
+    gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vPosition );
     
-    //-----------------------------------------
+    //--------------------------------------------------------------
 
     xLoc = gl.getUniformLocation( program, "xloc" );
 	yLoc = gl.getUniformLocation( program, "yloc" );
@@ -105,7 +114,7 @@ window.onload = function init()
         angleRadians = 0.0;
         document.getElementById('rotate-r').value = angleDegrees;
 		
-		scale = 1.0;
+		scale = 0.5;
         document.getElementById('scale').value = scale;
 		
 		xaxis = 0;
@@ -142,7 +151,7 @@ window.onload = function init()
 
 function animation()
 {
-	angleRadians += 0.01;
+	angleRadians += 0.03; // rotating speed
 	
 	xvalue = Math.sin(angleRadians);
 	yvalue = Math.cos(angleRadians);

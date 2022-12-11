@@ -6,6 +6,9 @@
 
     <script id="vertex-shader" type="x-shader/x-vertex">
         attribute vec4 vPosition;
+        attribute vec3 vColor;
+        varying vec4 fColor;
+
         uniform float xloc;
         uniform float yloc;
         uniform float scale;
@@ -14,8 +17,9 @@
 
         void main()
         {
-            gl_Position.x = -xloc * scale * vPosition.x + yloc * scale * vPosition.y + xaxis;
-            gl_Position.y =  xloc * scale * vPosition.y + yloc * scale * vPosition.x + yaxis;
+            //fColor = vColor
+            gl_Position.x = (xloc * scale * vPosition.x) + (yloc * scale * vPosition.y) + xaxis;
+            gl_Position.y =  (xloc * scale * vPosition.y) + (yloc * scale * vPosition.x) + yaxis;
             
             gl_Position.z = 0.0;
             gl_Position.w = 1.0;
@@ -25,9 +29,12 @@
     <script id="fragment-shader" type="x-shader/x-fragment">
         precision mediump float;
 
+        varying vec4 fColor;
+
     void main()
     {
-        gl_FragColor = vec4( 1.0, 0.0, 1.0, 1.0 );
+        //gl_FragColor = vec4( 1.0, 0.0, 1.0, 1.0 );
+        gl_FragColor = fColor;
     }
     </script>
 
@@ -59,7 +66,7 @@
               
                 <tr>
                     <td>Scale</td>
-                    <td><input id="scale" type="range" min="0" max="10" step="0.1" value="1.0"/></td>
+                    <td><input id="scale" type="range" min="0" max="5" step="0.1" value="0.5"/></td>
                     <td><input type="text" id="textscale" value="0" size="3"></td>
                 </tr>
                 <tr>
